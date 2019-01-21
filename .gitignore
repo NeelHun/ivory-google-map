@@ -11,3 +11,4 @@
 # PHPUnit
 /phpunit.xml
 /build
+.idea/
