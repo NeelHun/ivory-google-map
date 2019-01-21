@@ -25,8 +25,8 @@ use Ivory\Serializer\SerializerInterface;
  */
 class GeocoderService extends AbstractSerializableService
 {
-	private $httpRequest;
-	private $httpResponse;
+	private $requestParams;
+	private $responseBody;
 
     /**
      * @param HttpClient               $client
@@ -54,9 +54,9 @@ class GeocoderService extends AbstractSerializableService
     public function geocode(GeocoderRequestInterface $request)
     {
         $httpRequest = $this->createRequest($request);
-        $this->httpRequest = $httpRequest;
+        $this->requestParams = $httpRequest->getUri()->getQuery();
         $httpResponse = $this->getClient()->sendRequest($httpRequest);
-        $this->httpResponse = $httpResponse;
+        $this->responseBody = $httpResponse->getBody()->getContents();
 
         $response = $this->deserialize(
             $httpResponse,
@@ -69,13 +69,13 @@ class GeocoderService extends AbstractSerializableService
         return $response;
     }
 
-	public function getRequest()
+	public function getRequestParams()
 	{
-		return $this->httpRequest;
+		return $this->requestParams;
 	}
 
-	public function getResponse()
+	public function getResponseBody()
 	{
-		return $this->httpResponse;
+		return $this->responseBody;
 	}
 }
